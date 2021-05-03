@@ -1,0 +1,108 @@
+﻿@model IEnumerable<E_Tender.Models.Tender>
+
+@{
+    ViewBag.Title = "supplierhome";
+}
+
+<h2>supplierhome</h2>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+</head>
+<body>
+    <table id="tblStudent" class="table" cellpadding="0" cellspacing="0">
+        <tr>
+            <th style="width:100px">Tender Registration Number</th>
+            <th style="width:100px">Tender Name</th>
+            <th style="width:150px">Tender Quation</th>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+           
+        </tr>
+        @foreach (var stud in Model)
+        {
+            
+            <tr>
+                <td class="Tender_Registration_Number">
+                    <span>@stud.Tender_Registration_Number</span>
+                    <input type="text" value="@stud.Tender_Registration_Number" style="display:none;width:100px" />
+                </td>
+                <td class="Tender_Name">
+                    <span>@stud.Tender_Name</span>
+                    <input type="text" value="@stud.Tender_Name" style="display:none;width:100px" />
+                </td>
+                <td class="Tender_Quation_">
+                    <span>@stud.Tender_Quation_</span>
+                    <input type="text" value="@stud.Tender_Quation_" style="display:none;width:150px " />
+                </td>
+                <td>
+                    @*<a class="Delete" href="javascript:;">Decline</a>*@
+                    @Html.ActionLink("Accept Tender", "Accept", "Tendor")
+                </td>
+             </tr>
+        }
+    </table>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            //Remove the dummy row if data present.
+            if ($("#tblStudent tr").length > 2) {
+                $("#tblStudent tr:eq(1)").remove();
+            }
+        });
+
+
+        //Delete event handler.
+        $("body").on("click", "#tblStudent .Delete", function () {
+            if (confirm("Do you want to delete this row?")) {
+                var row = $(this).closest("tr");
+                var CompanyId = row.find("span").html();
+                $.ajax({
+                    type: "POST",
+                    url: "/Tendor/Delete",
+                    data: '{Tender_Registration_Number: ' + Tender_Registration_Number + '}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        row.remove();
+                    }
+                });
+            }
+        });
+
+        //Accept Event Handler
+        $("body").on("click", "#tblStudent .Accept", function () {
+            if (confirm("Do you want to Accept this ?")) {
+                var row = $(this).closest("tr");
+                var company = {};
+                company.Tender_Registration_Number = row.find(".Tender_Registration_Number").find("span").html();
+                company.Tender_Name = row.find(".Tender_Name").find("span").html();              
+                company.Tender_Quation_ = row.find(".Tender_Quation_").find("span").html();
+              
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Tendor/Accept",
+                    data: '{Tender_Registration_Number: "' + company.Tender_Registration_Number + '",Tender_Name: "' + company.Tender_Name + '", Tender_Quation_: "' + company.Tender_Quation_ + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        //row.remove();
+                        row.find(".Delete").hide();
+                        row.find(".Accept").hide();
+                        row.find(".TendorAccept").show();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+@Html.ActionLink("Logout", "Logout", "Supplier")

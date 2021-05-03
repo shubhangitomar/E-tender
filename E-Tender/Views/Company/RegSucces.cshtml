@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "RegSucces";
+}
+
+<h2>Registration Succes</h2>
+
+<p>
+    @TempData["msg"].ToString();
+
+</p>
+<br>
+<p style="color:red">
+    @TempData["abc"].ToString();
+</p>
+
+<div>
+    @Html.ActionLink("Back to Home Page", "Index", "Common")
+</div>

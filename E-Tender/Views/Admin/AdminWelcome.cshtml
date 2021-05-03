@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "AdminWelcome";
+}
+
+<style>
+    img#company {
+    margin-top: 73px;
+}
+    img#supplier {
+    margin-top: 37px;
+    width: 372px;
+}
+figcaption {
+    font-size: 25px;
+    margin-left: 126px;
+}
+</style>
+
+<h2>AdminWelcome</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <figure><a href="/Company/Index"><img src="~/Images/Company.png" width="300" height="258" alt="admin" id="company" /></a><figcaption>Company</figcaption> </figure>
+        </div>
+        <div class="col-sm-6">
+            <figure><a href="/Supplier/Index"><img src="~/Images/Company1.png"  id="supplier" /></a><figcaption>Supplier</figcaption> </figure>
+        </div>
+    </div>
+</div>
+
+@Html.ActionLink("Logout", "Logout", "Admin") 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>

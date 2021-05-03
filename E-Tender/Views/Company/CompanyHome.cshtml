@@ -1,0 +1,28 @@
+﻿@model IEnumerable<E_Tender.Models.Company>
+
+@{
+    ViewBag.Title = "CompanyHome";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    <h2>Company HomePage </h2>
+
+    @*<p>@TempData["name"].ToString()</p>*@
+    Welcome @Session["username"]
+    <div>
+        @Html.ActionLink("Logout", "Logout","Company")
+    </div>
+    <div>
+        @Html.ActionLink("Create Tender", "Index", "Tendor")
+    </div>
+    <div>
+        @Html.ActionLink("Accepted Tender List", "TenderList", "Company")
+    </div>
+
+</body>
+
+</html>
