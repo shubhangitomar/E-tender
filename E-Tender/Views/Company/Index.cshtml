@@ -70,11 +70,6 @@
                         <a class="Update" href="javascript:;" style="display:none">Update</a>
                         <a class="Cancel" href="javascript:;" style="display:none">Cancel</a>
                     }
-                    @*<a class="Update" href="javascript:;" style="display:none">Update</a>
-                        <a class="Cancel" href="javascript:;" style="display:none">Cancel</a>
-                        <a class="Delete" href="javascript:;">Decline</a>
-                        <a class="Accept" href="javascript:;"> Accept Tendor</a>*@
-                    @*<a class="Edit" href="javascript:;">Edit</a>*@
                 </td>
             </tr>
         }
@@ -161,11 +156,11 @@
         $("body").on("click", "#tblStudent .Delete", function () {
             if (confirm("Do you want to delete this row?")) {
                 var row = $(this).closest("tr");
-                var CompanyId = row.find("span").html();
+                var CCompanyId = row.find("span").html();
                 $.ajax({
                     type: "POST",
                     url: "/Company/Delete",
-                    data: '{CompanyId: ' + CompanyId + '}',
+                    data: '{CCompanyId: ' + CCompanyId + '}',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (response) {
@@ -180,13 +175,10 @@
                 var row = $(this).closest("tr");
                 var company = {};
                 company.CCompanyId = row.find(".CCompanyId").find("span").html();
-                debugger
-                company.CName = row.find(".CName").find("span").html();
-                debugger
+                
+                company.CName = row.find(".CName").find("span").html();                
                 company.City = row.find(".City").find("span").html();
-                debugger
                 company.State = row.find(".State").find("span").html();
-                debugger
                 company.ContactNo = row.find(".ContactNo").find("span").html();
 
 

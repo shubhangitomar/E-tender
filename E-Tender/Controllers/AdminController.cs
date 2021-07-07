@@ -31,7 +31,7 @@ namespace E_Tender.Controllers
             }
             else
             {
-                ViewData["Invalid"] = "Invalid Username or Password";
+                TempData["msg1"] = "Invalid user id or password";
             }
             return View();
         }
@@ -44,6 +44,7 @@ namespace E_Tender.Controllers
         public ActionResult Logout()
         {
             Session.Remove("username");
+            //return View();
             return RedirectToAction("Login");
         }
 

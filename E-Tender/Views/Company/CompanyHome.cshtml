@@ -7,6 +7,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+    <script type="text/javascript">
+        window.history.forward();
+        function noBack() {
+            window.history.forward();
+        }
+    </script>
 </head>
 <body>
     <h2>Company HomePage </h2>
@@ -20,7 +27,7 @@
         @Html.ActionLink("Create Tender", "Index", "Tendor")
     </div>
     <div>
-        @Html.ActionLink("Accepted Tender List", "TenderList", "Company")
+        @Html.ActionLink("Bidder's  List", "TenderList", "Company")
     </div>
 
 </body>

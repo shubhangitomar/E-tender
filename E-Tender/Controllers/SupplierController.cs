@@ -89,12 +89,14 @@ namespace E_Tender.Controllers
             return View();
         }
 
-        public ActionResult supplierhome()
+        public ActionResult supplierhome(Tender t)
         {
             if (Session["username"] != null)
             {
+
                 var res = from k in db.Tenders
                           select k;
+                TempData["Id"] = t.Tender_Registration_Number;
                 return View(res.ToList());
             }
             else
@@ -123,9 +125,9 @@ namespace E_Tender.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
-        public JsonResult Delete(String SCompanyId)
+        public JsonResult Delete(Supplier s)
         {
-            Supplier t1 = db.Suppliers.Where(x => x.SCompanyId == SCompanyId).FirstOrDefault();
+            Supplier t1 = db.Suppliers.First(x => x.SCompanyId.Equals(s.SCompanyId));
             db.Suppliers.DeleteOnSubmit(t1);
             db.SubmitChanges();
             var res = from k in db.Suppliers

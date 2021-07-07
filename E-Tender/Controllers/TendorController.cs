@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using E_Tender.Models;
+using System.Web.Helpers;
 
 namespace E_Tender.Controllers
 {
@@ -13,7 +14,7 @@ namespace E_Tender.Controllers
         // GET: Tendor
         public ActionResult Index()
         {
-            return View();
+                return View();
         }
 
         [HttpPost]
@@ -46,6 +47,7 @@ namespace E_Tender.Controllers
         {
             try
             {
+               
                 db.TenderResponses.InsertOnSubmit(t);
                 db.SubmitChanges();
                 return RedirectToAction("supplierhome", "Supplier");
@@ -60,6 +62,44 @@ namespace E_Tender.Controllers
         public ActionResult Accepted()
         {
             return View();
+        }
+
+
+        public ActionResult Response()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Response(string username)
+        {
+            string subject = "Response of Tender";
+            string body = "We are happy to announce your proposal for our tender has been approved .We can continue with further process";
+            WebMail.Send(username, subject, body, null, null, null, true, null, null, null, null, null, null);
+            ViewBag.msg = "Email sent successfully.....";
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int Id)
+        {
+            TenderResponse t1 = db.TenderResponses.First(x => x.Id == Id);
+            db.TenderResponses.DeleteOnSubmit(t1);
+            db.SubmitChanges();
+            return RedirectToAction("TenderList","Company");
+
+        }
+
+
+        public ActionResult GetImage(int Id)
+        {
+            Tender t = (from k in db.Tenders
+                          where k.Id == Id
+                          select k).FirstOrDefault();
+
+            byte[] imgdata = t.Tender_Documents.ToArray();
+            return File(imgdata, "image/jpeg/png/pdf");
         }
     }
 }

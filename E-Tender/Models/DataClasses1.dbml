@@ -9,8 +9,8 @@
   </Table>
   <Table Name="dbo.Company" Member="Companies">
     <Type Name="Company">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="CCompanyId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CCompanyId" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="CName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="Password" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="City" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
@@ -18,17 +18,8 @@
       <Column Name="ContactNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="IsActive" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="ProfilePhoto" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Supplier" Member="Suppliers">
-    <Type Name="Supplier">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="SCompanyId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="SCompanyName" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
-      <Column Name="Quotation" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="Password" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="Image" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="IsActive" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Company_Tender" Member="Tenders" ThisKey="CCompanyId" OtherKey="CCompanyId" Type="Tender" />
+      <Association Name="Company_TenderResponse" Member="TenderResponses" ThisKey="CCompanyId" OtherKey="CCompanyId" Type="TenderResponse" />
     </Type>
   </Table>
   <Table Name="dbo.Tender" Member="Tenders">
@@ -39,6 +30,8 @@
       <Column Name="[Tender Documents]" Member="Tender_Documents" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
       <Column Name="[Tender Quation ]" Member="Tender_Quation_" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="CCompanyId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="IsActive" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Company_Tender" Member="Company" ThisKey="CCompanyId" OtherKey="CCompanyId" Type="Company" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.TenderResponse" Member="TenderResponses">
@@ -48,6 +41,22 @@
       <Column Name="SCompanyName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="Quotation" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Duration" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CCompanyId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Company_TenderResponse" Member="Company" ThisKey="CCompanyId" OtherKey="CCompanyId" Type="Company" IsForeignKey="true" />
+      <Association Name="Supplier_TenderResponse" Member="Supplier" ThisKey="SCompanyId" OtherKey="SCompanyId" Type="Supplier" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Supplier" Member="Suppliers">
+    <Type Name="Supplier">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SCompanyId" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SCompanyName" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="Quotation" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Image" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="IsActive" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Supplier_TenderResponse" Member="TenderResponses" ThisKey="SCompanyId" OtherKey="SCompanyId" Type="TenderResponse" />
     </Type>
   </Table>
 </Database>

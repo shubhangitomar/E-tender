@@ -6,6 +6,15 @@
 
 <h2>supplierhome</h2>
 
+<script type="text/javascript">
+
+  
+
+        window.history.forward();
+        function noBack() {
+            window.history.forward();
+        }
+</script>
 <!DOCTYPE html>
 
 <html>
@@ -40,10 +49,31 @@
                     <span>@stud.Tender_Quation_</span>
                     <input type="text" value="@stud.Tender_Quation_" style="display:none;width:150px " />
                 </td>
-                <td>
-                    @*<a class="Delete" href="javascript:;">Decline</a>*@
-                    @Html.ActionLink("Accept Tender", "Accept", "Tendor")
+                <td class="Tender_Quation_">
+                    <img src="@Url.Action("GetImage","Tendor",new{@Id= @stud.Id })" height="100" width="100" />
                 </td>
+
+                <td class="CCompanyId">
+                    <span>@stud.CCompanyId</span>
+                    <input type="text" value="@stud.CCompanyId" style="display:none;width:100px" />
+                </td>
+
+                <td>
+                    @*@Html.ActionLink("Decline", "Delete", "Tendor")*@
+                    @Html.ActionLink("Bid", "Accept", "Tendor")
+
+                    @*<a href="/Tendor/Accept">Bid</a>*@
+                    @*@if (stud.IsActive == "True")
+                    {
+                        <p>Responded</p>
+                    }
+                    @if (stud.IsActive == "False")
+                    {
+                        <a class="Bid" href="javascript:;">Bid</a>
+                    }*@
+
+                </td>
+                
              </tr>
         }
     </table>
@@ -58,27 +88,8 @@
             }
         });
 
-
-        //Delete event handler.
-        $("body").on("click", "#tblStudent .Delete", function () {
-            if (confirm("Do you want to delete this row?")) {
-                var row = $(this).closest("tr");
-                var CompanyId = row.find("span").html();
-                $.ajax({
-                    type: "POST",
-                    url: "/Tendor/Delete",
-                    data: '{Tender_Registration_Number: ' + Tender_Registration_Number + '}',
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (response) {
-                        row.remove();
-                    }
-                });
-            }
-        });
-
         //Accept Event Handler
-        $("body").on("click", "#tblStudent .Accept", function () {
+        $("body").on("click", "#tblStudent .Bid", function () {
             if (confirm("Do you want to Accept this ?")) {
                 var row = $(this).closest("tr");
                 var company = {};
@@ -93,12 +104,6 @@
                     data: '{Tender_Registration_Number: "' + company.Tender_Registration_Number + '",Tender_Name: "' + company.Tender_Name + '", Tender_Quation_: "' + company.Tender_Quation_ + '"}',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    success: function (response) {
-                        //row.remove();
-                        row.find(".Delete").hide();
-                        row.find(".Accept").hide();
-                        row.find(".TendorAccept").show();
-                    }
                 });
             }
         });

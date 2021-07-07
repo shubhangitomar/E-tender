@@ -50,11 +50,7 @@
                         <a class="Update" href="javascript:;" style="display:none">Update</a>
                         <a class="Cancel" href="javascript:;" style="display:none">Cancel</a>
                     }
-                    @*<a class="Update" href="javascript:;" style="display:none">Update</a>
-                        <a class="Cancel" href="javascript:;" style="display:none">Cancel</a>
-                        <a class="Delete" href="javascript:;">Decline</a>
-                        <a class="Accept" href="javascript:;"> Accept Tendor</a>*@
-                    @*<a class="Edit" href="javascript:;">Edit</a>*@
+
                 </td>
             </tr>
         }
@@ -111,7 +107,7 @@
             $.ajax({
                 type: "POST",
                 url: "/Supplier/Edit",
-                data: '{SCompanyId: "' + company.SCompanyId + '",SCompanyName: "' + company.SCompanyName + '", Quotation: "' + company.Quotation + '" }',
+                data: '{SCompanyId: "' + company.SCompanyId + '",SCompanyName: "' + company.SCompanyName + '" }',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json"
             });
@@ -138,7 +134,7 @@
         $("body").on("click", "#tblStudent .Delete", function () {
             if (confirm("Do you want to delete this row?")) {
                 var row = $(this).closest("tr");
-                var CompanyId = row.find("span").html();
+                var SCompanyId = row.find("span").html();
                 $.ajax({
                     type: "POST",
                     url: "/Supplier/Delete",
@@ -158,12 +154,12 @@
                 var company = {};
                 company.SCompanyId = row.find(".SCompanyId").find("span").html();
                 company.SCompanyName = row.find(".SCompanyName").find("span").html();
-                company.Quotation = row.find(".Quotation").find("span").html();
+               
 
                 $.ajax({
                     type: "POST",
                     url: "/Supplier/Accept",
-                    data:'{SCompanyId: "' + company.SCompanyId + '",SCompanyName: "' + company.SCompanyName + '", Quotation: "' + company.Quotation + '" }',
+                    data:'{SCompanyId: "' + company.SCompanyId + '",SCompanyName: "' + company.SCompanyName + '" }',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (response) {

@@ -110,9 +110,11 @@ namespace E_Tender.Controllers
 
             if (Session["username"] != null)
             {
-                var res = from k in db.TenderResponses
-                                     select k;
-                return View(res.ToList());
+                    var res = from k in db.TenderResponses
+                              where k.CCompanyId.Equals(Session["username"])
+                              select k;
+                    return View(res.ToList());
+               
             }
             else
             {
@@ -155,16 +157,14 @@ namespace E_Tender.Controllers
         }
 
         [HttpPost]
-        public JsonResult Delete(String CCompanyId)
+        public JsonResult  Delete(Company c)
         {
-            Company t1 = db.Companies.Where(x => x.CCompanyId == CCompanyId).FirstOrDefault();
+            Company t1 = db.Companies.First(x => x.CCompanyId.Equals(c.CCompanyId));
             db.Companies.DeleteOnSubmit(t1);
             db.SubmitChanges();
             var res = from k in db.Companies
                       select k;
-
             return Json(t1);
-
         }
     }
 }

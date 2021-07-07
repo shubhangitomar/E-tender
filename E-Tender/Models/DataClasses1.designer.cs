@@ -36,15 +36,15 @@ namespace E_Tender.Models
     partial void InsertCompany(Company instance);
     partial void UpdateCompany(Company instance);
     partial void DeleteCompany(Company instance);
-    partial void InsertSupplier(Supplier instance);
-    partial void UpdateSupplier(Supplier instance);
-    partial void DeleteSupplier(Supplier instance);
     partial void InsertTender(Tender instance);
     partial void UpdateTender(Tender instance);
     partial void DeleteTender(Tender instance);
     partial void InsertTenderResponse(TenderResponse instance);
     partial void UpdateTenderResponse(TenderResponse instance);
     partial void DeleteTenderResponse(TenderResponse instance);
+    partial void InsertSupplier(Supplier instance);
+    partial void UpdateSupplier(Supplier instance);
+    partial void DeleteSupplier(Supplier instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
@@ -93,14 +93,6 @@ namespace E_Tender.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Supplier> Suppliers
-		{
-			get
-			{
-				return this.GetTable<Supplier>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Tender> Tenders
 		{
 			get
@@ -114,6 +106,14 @@ namespace E_Tender.Models
 			get
 			{
 				return this.GetTable<TenderResponse>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Supplier> Suppliers
+		{
+			get
+			{
+				return this.GetTable<Supplier>();
 			}
 		}
 	}
@@ -252,6 +252,10 @@ namespace E_Tender.Models
 		
 		private System.Data.Linq.Binary _ProfilePhoto;
 		
+		private EntitySet<Tender> _Tenders;
+		
+		private EntitySet<TenderResponse> _TenderResponses;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -278,10 +282,12 @@ namespace E_Tender.Models
 		
 		public Company()
 		{
+			this._Tenders = new EntitySet<Tender>(new Action<Tender>(this.attach_Tenders), new Action<Tender>(this.detach_Tenders));
+			this._TenderResponses = new EntitySet<TenderResponse>(new Action<TenderResponse>(this.attach_TenderResponses), new Action<TenderResponse>(this.detach_TenderResponses));
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.Always, DbType="Int NOT NULL IDENTITY", IsDbGenerated=true)]
 		public int Id
 		{
 			get
@@ -301,7 +307,7 @@ namespace E_Tender.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CCompanyId", DbType="VarChar(50)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CCompanyId", DbType="VarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
 		public string CCompanyId
 		{
 			get
@@ -461,6 +467,591 @@ namespace E_Tender.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Company_Tender", Storage="_Tenders", ThisKey="CCompanyId", OtherKey="CCompanyId")]
+		public EntitySet<Tender> Tenders
+		{
+			get
+			{
+				return this._Tenders;
+			}
+			set
+			{
+				this._Tenders.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Company_TenderResponse", Storage="_TenderResponses", ThisKey="CCompanyId", OtherKey="CCompanyId")]
+		public EntitySet<TenderResponse> TenderResponses
+		{
+			get
+			{
+				return this._TenderResponses;
+			}
+			set
+			{
+				this._TenderResponses.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Tenders(Tender entity)
+		{
+			this.SendPropertyChanging();
+			entity.Company = this;
+		}
+		
+		private void detach_Tenders(Tender entity)
+		{
+			this.SendPropertyChanging();
+			entity.Company = null;
+		}
+		
+		private void attach_TenderResponses(TenderResponse entity)
+		{
+			this.SendPropertyChanging();
+			entity.Company = this;
+		}
+		
+		private void detach_TenderResponses(TenderResponse entity)
+		{
+			this.SendPropertyChanging();
+			entity.Company = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Tender")]
+	public partial class Tender : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private System.Nullable<int> _Tender_Registration_Number;
+		
+		private string _Tender_Name;
+		
+		private System.Data.Linq.Binary _Tender_Documents;
+		
+		private System.Nullable<int> _Tender_Quation_;
+		
+		private string _CCompanyId;
+		
+		private string _IsActive;
+		
+		private EntityRef<Company> _Company;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnTender_Registration_NumberChanging(System.Nullable<int> value);
+    partial void OnTender_Registration_NumberChanged();
+    partial void OnTender_NameChanging(string value);
+    partial void OnTender_NameChanged();
+    partial void OnTender_DocumentsChanging(System.Data.Linq.Binary value);
+    partial void OnTender_DocumentsChanged();
+    partial void OnTender_Quation_Changing(System.Nullable<int> value);
+    partial void OnTender_Quation_Changed();
+    partial void OnCCompanyIdChanging(string value);
+    partial void OnCCompanyIdChanged();
+    partial void OnIsActiveChanging(string value);
+    partial void OnIsActiveChanged();
+    #endregion
+		
+		public Tender()
+		{
+			this._Company = default(EntityRef<Company>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Tender Registration Number]", Storage="_Tender_Registration_Number", DbType="Int")]
+		public System.Nullable<int> Tender_Registration_Number
+		{
+			get
+			{
+				return this._Tender_Registration_Number;
+			}
+			set
+			{
+				if ((this._Tender_Registration_Number != value))
+				{
+					this.OnTender_Registration_NumberChanging(value);
+					this.SendPropertyChanging();
+					this._Tender_Registration_Number = value;
+					this.SendPropertyChanged("Tender_Registration_Number");
+					this.OnTender_Registration_NumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Tender Name]", Storage="_Tender_Name", DbType="VarChar(50)")]
+		public string Tender_Name
+		{
+			get
+			{
+				return this._Tender_Name;
+			}
+			set
+			{
+				if ((this._Tender_Name != value))
+				{
+					this.OnTender_NameChanging(value);
+					this.SendPropertyChanging();
+					this._Tender_Name = value;
+					this.SendPropertyChanged("Tender_Name");
+					this.OnTender_NameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Tender Documents]", Storage="_Tender_Documents", DbType="Image", UpdateCheck=UpdateCheck.Never)]
+		public System.Data.Linq.Binary Tender_Documents
+		{
+			get
+			{
+				return this._Tender_Documents;
+			}
+			set
+			{
+				if ((this._Tender_Documents != value))
+				{
+					this.OnTender_DocumentsChanging(value);
+					this.SendPropertyChanging();
+					this._Tender_Documents = value;
+					this.SendPropertyChanged("Tender_Documents");
+					this.OnTender_DocumentsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Tender Quation ]", Storage="_Tender_Quation_", DbType="Int")]
+		public System.Nullable<int> Tender_Quation_
+		{
+			get
+			{
+				return this._Tender_Quation_;
+			}
+			set
+			{
+				if ((this._Tender_Quation_ != value))
+				{
+					this.OnTender_Quation_Changing(value);
+					this.SendPropertyChanging();
+					this._Tender_Quation_ = value;
+					this.SendPropertyChanged("Tender_Quation_");
+					this.OnTender_Quation_Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CCompanyId", DbType="VarChar(50)")]
+		public string CCompanyId
+		{
+			get
+			{
+				return this._CCompanyId;
+			}
+			set
+			{
+				if ((this._CCompanyId != value))
+				{
+					if (this._Company.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCCompanyIdChanging(value);
+					this.SendPropertyChanging();
+					this._CCompanyId = value;
+					this.SendPropertyChanged("CCompanyId");
+					this.OnCCompanyIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="VarChar(50)")]
+		public string IsActive
+		{
+			get
+			{
+				return this._IsActive;
+			}
+			set
+			{
+				if ((this._IsActive != value))
+				{
+					this.OnIsActiveChanging(value);
+					this.SendPropertyChanging();
+					this._IsActive = value;
+					this.SendPropertyChanged("IsActive");
+					this.OnIsActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Company_Tender", Storage="_Company", ThisKey="CCompanyId", OtherKey="CCompanyId", IsForeignKey=true)]
+		public Company Company
+		{
+			get
+			{
+				return this._Company.Entity;
+			}
+			set
+			{
+				Company previousValue = this._Company.Entity;
+				if (((previousValue != value) 
+							|| (this._Company.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Company.Entity = null;
+						previousValue.Tenders.Remove(this);
+					}
+					this._Company.Entity = value;
+					if ((value != null))
+					{
+						value.Tenders.Add(this);
+						this._CCompanyId = value.CCompanyId;
+					}
+					else
+					{
+						this._CCompanyId = default(string);
+					}
+					this.SendPropertyChanged("Company");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TenderResponse")]
+	public partial class TenderResponse : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _SCompanyId;
+		
+		private string _SCompanyName;
+		
+		private System.Nullable<int> _Quotation;
+		
+		private string _Duration;
+		
+		private string _CCompanyId;
+		
+		private string _Email;
+		
+		private EntityRef<Company> _Company;
+		
+		private EntityRef<Supplier> _Supplier;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnSCompanyIdChanging(string value);
+    partial void OnSCompanyIdChanged();
+    partial void OnSCompanyNameChanging(string value);
+    partial void OnSCompanyNameChanged();
+    partial void OnQuotationChanging(System.Nullable<int> value);
+    partial void OnQuotationChanged();
+    partial void OnDurationChanging(string value);
+    partial void OnDurationChanged();
+    partial void OnCCompanyIdChanging(string value);
+    partial void OnCCompanyIdChanged();
+    partial void OnEmailChanging(string value);
+    partial void OnEmailChanged();
+    #endregion
+		
+		public TenderResponse()
+		{
+			this._Company = default(EntityRef<Company>);
+			this._Supplier = default(EntityRef<Supplier>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SCompanyId", DbType="VarChar(50)")]
+		public string SCompanyId
+		{
+			get
+			{
+				return this._SCompanyId;
+			}
+			set
+			{
+				if ((this._SCompanyId != value))
+				{
+					if (this._Supplier.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSCompanyIdChanging(value);
+					this.SendPropertyChanging();
+					this._SCompanyId = value;
+					this.SendPropertyChanged("SCompanyId");
+					this.OnSCompanyIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SCompanyName", DbType="VarChar(50)")]
+		public string SCompanyName
+		{
+			get
+			{
+				return this._SCompanyName;
+			}
+			set
+			{
+				if ((this._SCompanyName != value))
+				{
+					this.OnSCompanyNameChanging(value);
+					this.SendPropertyChanging();
+					this._SCompanyName = value;
+					this.SendPropertyChanged("SCompanyName");
+					this.OnSCompanyNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Quotation", DbType="Int")]
+		public System.Nullable<int> Quotation
+		{
+			get
+			{
+				return this._Quotation;
+			}
+			set
+			{
+				if ((this._Quotation != value))
+				{
+					this.OnQuotationChanging(value);
+					this.SendPropertyChanging();
+					this._Quotation = value;
+					this.SendPropertyChanged("Quotation");
+					this.OnQuotationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Duration", DbType="VarChar(50)")]
+		public string Duration
+		{
+			get
+			{
+				return this._Duration;
+			}
+			set
+			{
+				if ((this._Duration != value))
+				{
+					this.OnDurationChanging(value);
+					this.SendPropertyChanging();
+					this._Duration = value;
+					this.SendPropertyChanged("Duration");
+					this.OnDurationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CCompanyId", DbType="VarChar(50)")]
+		public string CCompanyId
+		{
+			get
+			{
+				return this._CCompanyId;
+			}
+			set
+			{
+				if ((this._CCompanyId != value))
+				{
+					if (this._Company.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCCompanyIdChanging(value);
+					this.SendPropertyChanging();
+					this._CCompanyId = value;
+					this.SendPropertyChanged("CCompanyId");
+					this.OnCCompanyIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="VarChar(50)")]
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				if ((this._Email != value))
+				{
+					this.OnEmailChanging(value);
+					this.SendPropertyChanging();
+					this._Email = value;
+					this.SendPropertyChanged("Email");
+					this.OnEmailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Company_TenderResponse", Storage="_Company", ThisKey="CCompanyId", OtherKey="CCompanyId", IsForeignKey=true)]
+		public Company Company
+		{
+			get
+			{
+				return this._Company.Entity;
+			}
+			set
+			{
+				Company previousValue = this._Company.Entity;
+				if (((previousValue != value) 
+							|| (this._Company.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Company.Entity = null;
+						previousValue.TenderResponses.Remove(this);
+					}
+					this._Company.Entity = value;
+					if ((value != null))
+					{
+						value.TenderResponses.Add(this);
+						this._CCompanyId = value.CCompanyId;
+					}
+					else
+					{
+						this._CCompanyId = default(string);
+					}
+					this.SendPropertyChanged("Company");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Supplier_TenderResponse", Storage="_Supplier", ThisKey="SCompanyId", OtherKey="SCompanyId", IsForeignKey=true)]
+		public Supplier Supplier
+		{
+			get
+			{
+				return this._Supplier.Entity;
+			}
+			set
+			{
+				Supplier previousValue = this._Supplier.Entity;
+				if (((previousValue != value) 
+							|| (this._Supplier.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Supplier.Entity = null;
+						previousValue.TenderResponses.Remove(this);
+					}
+					this._Supplier.Entity = value;
+					if ((value != null))
+					{
+						value.TenderResponses.Add(this);
+						this._SCompanyId = value.SCompanyId;
+					}
+					else
+					{
+						this._SCompanyId = default(string);
+					}
+					this.SendPropertyChanged("Supplier");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -502,6 +1093,8 @@ namespace E_Tender.Models
 		
 		private string _IsActive;
 		
+		private EntitySet<TenderResponse> _TenderResponses;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -524,10 +1117,11 @@ namespace E_Tender.Models
 		
 		public Supplier()
 		{
+			this._TenderResponses = new EntitySet<TenderResponse>(new Action<TenderResponse>(this.attach_TenderResponses), new Action<TenderResponse>(this.detach_TenderResponses));
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.Always, DbType="Int NOT NULL IDENTITY", IsDbGenerated=true)]
 		public int Id
 		{
 			get
@@ -547,7 +1141,7 @@ namespace E_Tender.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SCompanyId", DbType="VarChar(50)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SCompanyId", DbType="VarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
 		public string SCompanyId
 		{
 			get
@@ -667,6 +1261,19 @@ namespace E_Tender.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Supplier_TenderResponse", Storage="_TenderResponses", ThisKey="SCompanyId", OtherKey="SCompanyId")]
+		public EntitySet<TenderResponse> TenderResponses
+		{
+			get
+			{
+				return this._TenderResponses;
+			}
+			set
+			{
+				this._TenderResponses.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -685,349 +1292,19 @@ namespace E_Tender.Models
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_TenderResponses(TenderResponse entity)
+		{
+			this.SendPropertyChanging();
+			entity.Supplier = this;
+		}
+		
+		private void detach_TenderResponses(TenderResponse entity)
+		{
+			this.SendPropertyChanging();
+			entity.Supplier = null;
 		}
 	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Tender")]
-	public partial class Tender : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private System.Nullable<int> _Tender_Registration_Number;
-		
-		private string _Tender_Name;
-		
-		private System.Data.Linq.Binary _Tender_Documents;
-		
-		private System.Nullable<int> _Tender_Quation_;
-		
-		private string _CCompanyId;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnTender_Registration_NumberChanging(System.Nullable<int> value);
-    partial void OnTender_Registration_NumberChanged();
-    partial void OnTender_NameChanging(string value);
-    partial void OnTender_NameChanged();
-    partial void OnTender_DocumentsChanging(System.Data.Linq.Binary value);
-    partial void OnTender_DocumentsChanged();
-    partial void OnTender_Quation_Changing(System.Nullable<int> value);
-    partial void OnTender_Quation_Changed();
-    partial void OnCCompanyIdChanging(string value);
-    partial void OnCCompanyIdChanged();
-    #endregion
-		
-		public Tender()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Tender Registration Number]", Storage="_Tender_Registration_Number", DbType="Int")]
-		public System.Nullable<int> Tender_Registration_Number
-		{
-			get
-			{
-				return this._Tender_Registration_Number;
-			}
-			set
-			{
-				if ((this._Tender_Registration_Number != value))
-				{
-					this.OnTender_Registration_NumberChanging(value);
-					this.SendPropertyChanging();
-					this._Tender_Registration_Number = value;
-					this.SendPropertyChanged("Tender_Registration_Number");
-					this.OnTender_Registration_NumberChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Tender Name]", Storage="_Tender_Name", DbType="VarChar(50)")]
-		public string Tender_Name
-		{
-			get
-			{
-				return this._Tender_Name;
-			}
-			set
-			{
-				if ((this._Tender_Name != value))
-				{
-					this.OnTender_NameChanging(value);
-					this.SendPropertyChanging();
-					this._Tender_Name = value;
-					this.SendPropertyChanged("Tender_Name");
-					this.OnTender_NameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Tender Documents]", Storage="_Tender_Documents", DbType="Image", UpdateCheck=UpdateCheck.Never)]
-		public System.Data.Linq.Binary Tender_Documents
-		{
-			get
-			{
-				return this._Tender_Documents;
-			}
-			set
-			{
-				if ((this._Tender_Documents != value))
-				{
-					this.OnTender_DocumentsChanging(value);
-					this.SendPropertyChanging();
-					this._Tender_Documents = value;
-					this.SendPropertyChanged("Tender_Documents");
-					this.OnTender_DocumentsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Tender Quation ]", Storage="_Tender_Quation_", DbType="Int")]
-		public System.Nullable<int> Tender_Quation_
-		{
-			get
-			{
-				return this._Tender_Quation_;
-			}
-			set
-			{
-				if ((this._Tender_Quation_ != value))
-				{
-					this.OnTender_Quation_Changing(value);
-					this.SendPropertyChanging();
-					this._Tender_Quation_ = value;
-					this.SendPropertyChanged("Tender_Quation_");
-					this.OnTender_Quation_Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CCompanyId", DbType="VarChar(50)")]
-		public string CCompanyId
-		{
-			get
-			{
-				return this._CCompanyId;
-			}
-			set
-			{
-				if ((this._CCompanyId != value))
-				{
-					this.OnCCompanyIdChanging(value);
-					this.SendPropertyChanging();
-					this._CCompanyId = value;
-					this.SendPropertyChanged("CCompanyId");
-					this.OnCCompanyIdChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TenderResponse")]
-	public partial class TenderResponse : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _SCompanyId;
-		
-		private string _SCompanyName;
-		
-		private System.Nullable<int> _Quotation;
-		
-		private string _Duration;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnSCompanyIdChanging(string value);
-    partial void OnSCompanyIdChanged();
-    partial void OnSCompanyNameChanging(string value);
-    partial void OnSCompanyNameChanged();
-    partial void OnQuotationChanging(System.Nullable<int> value);
-    partial void OnQuotationChanged();
-    partial void OnDurationChanging(string value);
-    partial void OnDurationChanged();
-    #endregion
-		
-		public TenderResponse()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SCompanyId", DbType="VarChar(50)")]
-		public string SCompanyId
-		{
-			get
-			{
-				return this._SCompanyId;
-			}
-			set
-			{
-				if ((this._SCompanyId != value))
-				{
-					this.OnSCompanyIdChanging(value);
-					this.SendPropertyChanging();
-					this._SCompanyId = value;
-					this.SendPropertyChanged("SCompanyId");
-					this.OnSCompanyIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SCompanyName", DbType="VarChar(50)")]
-		public string SCompanyName
-		{
-			get
-			{
-				return this._SCompanyName;
-			}
-			set
-			{
-				if ((this._SCompanyName != value))
-				{
-					this.OnSCompanyNameChanging(value);
-					this.SendPropertyChanging();
-					this._SCompanyName = value;
-					this.SendPropertyChanged("SCompanyName");
-					this.OnSCompanyNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Quotation", DbType="Int")]
-		public System.Nullable<int> Quotation
-		{
-			get
-			{
-				return this._Quotation;
-			}
-			set
-			{
-				if ((this._Quotation != value))
-				{
-					this.OnQuotationChanging(value);
-					this.SendPropertyChanging();
-					this._Quotation = value;
-					this.SendPropertyChanged("Quotation");
-					this.OnQuotationChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Duration", DbType="VarChar(50)")]
-		public string Duration
-		{
-			get
-			{
-				return this._Duration;
-			}
-			set
-			{
-				if ((this._Duration != value))
-				{
-					this.OnDurationChanging(value);
-					this.SendPropertyChanging();
-					this._Duration = value;
-					this.SendPropertyChanged("Duration");
-					this.OnDurationChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-
-       
-    }
 }
 #pragma warning restore 1591
